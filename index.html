@@ -1,43 +1,69 @@
 <html lang="en">
   <head>
     <title>Pricing Configurator</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script type="text/javascript" src="app.js"></script>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css" />
   </head>
 
   <body>
     <table>
-        <tr>
-            <td> loanAmount </td>
-            <td> oneTimeFee </td>
-            <td> totalRepayable </td>
-        </tr>
-        <tr>
-            <td id="loanAmount">  </td>
-            <td id="oneTimeFee">  </td>
-            <td id="totalRepayable">  </td>
-        </tr>
+      <tr>
+        <td>loanAmount</td>
+        <td>oneTimeFee</td>
+        <td>totalRepayable</td>
+      </tr>
+      <tr>
+        <td id="loanAmount"></td>
+        <td id="oneTimeFee"></td>
+        <td id="totalRepayable"></td>
+      </tr>
     </table>
 
     Slider:
-    <input class="styled-slider slider-progress" min="3"  type="range" style="width: 100%; --value:51; --min:3; --max:100;" id="sliderInput"/>
+    <input
+      class="styled-slider slider-progress"
+      min="3"
+      type="range"
+      style="width: 100%"
+      id="sliderInput"
+    />
 
     Term duration:
-    
-    <br><br>
-      <input type="radio" id="term_1" name="termDuration" value="6" checked="checked">
-      <label for="term_1">6 Months</label><br>
-      <input type="radio" id="term_2" name="termDuration" value="12">
-      <label for="term_2">12 Months</label><br>
-<br>
 
+    <br /><br />
+    <div class="radio-wrapper">
+       
+      <input
+        type="radio"
+        id="term_1"
+        name="termDuration"
+        value="6"
+        checked="checked"
+      />
+        <label class="radio-label first" for="term_1">6 Months</label>  
+      <input type="radio" id="term_2" name="termDuration" value="12" />  
+      <label class="radio-label last" for="term_2">12 Months</label>
+    </div>
+    <br />
 
     Discounts:
-    <button id="inventoryBtn">Inventory</button>
-    <button id="marketingBtn">Marketing</button>
-    <button id="otherBtn">Other</button>
+    <br /><br />
 
+    <div class="radio-wrapper">
+       
+      <input
+        type="radio"
+        id="discount_1"
+        name="discount"
+        value="1"
+        checked="checked"
+      />
+        <label class="radio-label first" for="discount_1">Inventory</label>  
+      <input type="radio" id="discount_2" name="discount" value="2" />  
+      <label class="radio-label middle" for="discount_2">Marketing</label>  
+      <input type="radio" id="discount_3" name="discount" value="3" />  
+      <label class="radio-label last" for="discount_3">Other</label>
+    </div>
   </body>
-
 </html>
