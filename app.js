@@ -42,11 +42,23 @@ let totalRepayable = loanAmount + loanAmount * oneTimeFee;
 let lastSliderValue = 0.5;
 let chosenDiscount = config.initialDiscount;
 
-var isMarketingBtnActive = false;
-var isInventoryBtnActive = false;
-var isOtherBtnActive = true;
+let getOneTimeFeeCash = function () {
+  return round(config.feeRatio[term] * loanAmount);
+}
 
-let updateSlider = function (ratio) {
+const updateFields = function () {
+  const loanAmountElement = document.querySelector("#loanAmount");
+  const totalRepayableElement = document.querySelector("#totalRepayable");
+  const oneTimeFeeElement = document.querySelector("#oneTimeFee");
+  const oneTimeFeeCashElment = document.querySelector("#oneTimeFeeCash");
+
+  oneTimeFeeCashElment.textContent = numberWithCommas(getOneTimeFeeCash()) + " \u20AC";
+  loanAmountElement.innerText = numberWithCommas(loanAmount) + " \u20AC";
+  totalRepayableElement.textContent = numberWithCommas(totalRepayable) + " \u20AC";
+  oneTimeFeeElement.textContent = oneTimeFee + " %";
+}
+
+const updateSlider = function (ratio) {
   tempSliderPosition = ratio;
   loanAmount = round(config.initialLoanAmount * round(ratio, 2), 0);
   oneTimeFee = round(config.feeRatio[term] * 100, 2);
@@ -54,29 +66,17 @@ let updateSlider = function (ratio) {
   if (chosenDiscount !== 1) {
     addDiscount(chosenDiscount);
   }
-  const loanAmountElement = document.querySelector("#loanAmount");
-  const totalRepayableElement = document.querySelector("#totalRepayable");
-  const oneTimeFeeElement = document.querySelector("#oneTimeFee");
-
-  loanAmountElement.innerText = numberWithCommas(loanAmount) + " \u20AC";
-  totalRepayableElement.textContent =
-    numberWithCommas(totalRepayable) + " \u20AC";
-  oneTimeFeeElement.textContent = oneTimeFee + " %";
+  updateFields()
 };
 
 function addDiscount(discount) {
-  var tempLoanAmount = config.initialLoanAmount * lastSliderValue;
-  var tempFeeRatio = config.feeRatio[term] * discount;
-  var tempOneTimeFee = round(tempFeeRatio * 100, 1);
+  let tempLoanAmount = config.initialLoanAmount * lastSliderValue;
+  let tempFeeRatio = config.feeRatio[term] * discount;
+  let tempOneTimeFee = round(tempFeeRatio * 100, 1);
   oneTimeFee = tempOneTimeFee;
   totalRepayable = round(tempLoanAmount + tempFeeRatio * tempLoanAmount, 0);
   chosenDiscount = discount;
-  var totalRepayableElement = document.querySelector("#totalRepayable");
-  var oneTimeFeeElement = document.querySelector("#oneTimeFee");
-
-  totalRepayableElement.textContent =
-    numberWithCommas(totalRepayable) + " \u20AC";
-  oneTimeFeeElement.textContent = oneTimeFee + " %";
+  updateFields()
 }
 
 let sliderChange = function (n) {
@@ -141,8 +141,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function changeDiscount(e) {
     if (e.target.value) {
+      webflowCheckHelper(e.target)
       addDiscount(config.discount[e.target.value]);
       // updateSlider(tempSliderPosition);
     }
+  }
+
+  // This just helps our current webflow implementation, please delete and ignore if you use it elsewhere
+  function webflowCheckHelper(input) {
+    let parent = input.parentNode
+    let parentsParent = parent.parentNode
+    for (let i = 0; i < parentsParent.children.length; i++) {
+      parentsParent.children[i].classList.remove('checked');
+    }
+    parent.classList.add("checked")
   }
 });

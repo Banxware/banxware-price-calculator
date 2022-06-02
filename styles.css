@@ -142,9 +142,6 @@ input[type="radio"]::after,
 input[type="radio"]::before {
   display: none;
 }
-input[type="radio"]:checked + .box {
-  background-color: var(--widget-primary);
-}
 .radio-label {
   position: relative;
   display: flex;
