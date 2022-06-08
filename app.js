@@ -43,7 +43,7 @@ let lastSliderValue = 0.5;
 let chosenDiscount = config.initialDiscount;
 
 let getOneTimeFeeCash = function () {
-  return round(config.feeRatio[term] * loanAmount);
+  return round((config.feeRatio[term] * chosenDiscount) * loanAmount);
 }
 
 const updateFields = function () {
@@ -61,23 +61,11 @@ const updateFields = function () {
 const updateSlider = function (ratio) {
   tempSliderPosition = ratio;
   loanAmount = round(config.initialLoanAmount * round(ratio, 2), 0);
-  oneTimeFee = round(config.feeRatio[term] * 100, 2);
-  totalRepayable = round(loanAmount + loanAmount * config.feeRatio[term], 0);
-  if (chosenDiscount !== 1) {
-    addDiscount(chosenDiscount);
-  }
+  const rawFee = config.feeRatio[term] * chosenDiscount
+  oneTimeFee = round(rawFee * 100, 2);
+  totalRepayable = round(loanAmount + loanAmount * rawFee, 0);
   updateFields()
 };
-
-function addDiscount(discount) {
-  let tempLoanAmount = config.initialLoanAmount * lastSliderValue;
-  let tempFeeRatio = config.feeRatio[term] * discount;
-  let tempOneTimeFee = round(tempFeeRatio * 100, 1);
-  oneTimeFee = tempOneTimeFee;
-  totalRepayable = round(tempLoanAmount + tempFeeRatio * tempLoanAmount, 0);
-  chosenDiscount = discount;
-  updateFields()
-}
 
 let sliderChange = function (n) {
   var e = n.target.value;
@@ -129,6 +117,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function changeTerm(e) {
     if (e.target.value) {
+      webflowCheckHelper(e.target)
       term = e.target.value;
       updateSlider(tempSliderPosition);
     }
@@ -142,8 +131,8 @@ document.addEventListener("DOMContentLoaded", function () {
   function changeDiscount(e) {
     if (e.target.value) {
       webflowCheckHelper(e.target)
-      addDiscount(config.discount[e.target.value]);
-      // updateSlider(tempSliderPosition);
+      chosenDiscount = config.discount[e.target.value];
+      updateSlider(tempSliderPosition);
     }
   }
 
