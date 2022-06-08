@@ -162,9 +162,7 @@ input[type="radio"]::before {
   border-bottom-right-radius: 10px;
   margin-left: -14px;
 }
-.radio-label.middle {
-  margin-left: -14px;
-}
+
 input[type="radio"]:checked + label {
   background-color: var(--widget-primary);
   color: var(--widget-background);
