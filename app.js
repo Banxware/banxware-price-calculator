@@ -13,14 +13,18 @@ const config = {
   initialLoanAmount: 100000,
   initialTerm: 6,
   feeRatio: {
-    6: 0.06,
-    12: 0.085,
-  },
-  initialDiscount: 1,
-  discount: {
-    1: 1,
-    2: 0.8235294118,
-    3: 1,
+    MARKETING: {
+      6: 0.045,
+      12: 0.07,
+    },
+    INVENTORY: {
+      6: 0.06,
+      12: 0.085,
+    },
+    OTHER: {
+      6: 0.06,
+      12: 0.085,
+    },
   },
 };
 
@@ -40,10 +44,10 @@ let term = config.initialTerm;
 let oneTimeFee = config.feeRatio[term] * 100;
 let totalRepayable = loanAmount + loanAmount * oneTimeFee;
 let lastSliderValue = 0.5;
-let chosenDiscount = config.initialDiscount;
+let chosenDiscount = 'INVENTORY';
 
 let getOneTimeFeeCash = function () {
-  return round((config.feeRatio[term] * chosenDiscount) * loanAmount);
+  return round((config.feeRatio[chosenDiscount][term]) * loanAmount);
 }
 
 const updateFields = function () {
@@ -61,7 +65,7 @@ const updateFields = function () {
 const updateSlider = function (ratio) {
   tempSliderPosition = ratio;
   loanAmount = round(config.initialLoanAmount * round(ratio, 2), 0);
-  const rawFee = config.feeRatio[term] * chosenDiscount
+  const rawFee = config.feeRatio[chosenDiscount][term]
   oneTimeFee = round(rawFee * 100, 2);
   totalRepayable = round(loanAmount + loanAmount * rawFee, 0);
   updateFields()
@@ -131,7 +135,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function changeDiscount(e) {
     if (e.target.value) {
       webflowCheckHelper(e.target)
-      chosenDiscount = config.discount[e.target.value];
+      chosenDiscount = e.target.value;
       updateSlider(tempSliderPosition);
     }
   }
