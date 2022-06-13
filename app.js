@@ -31,7 +31,7 @@ const config = {
 // LOGIC 🧮
 
 function numberWithCommas(x) {
-  return x.toString().replace("/B(?<!.d*)(?=(d{3})+(?!d))/g", ".");
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
 
 function round(value, precision) {
@@ -56,6 +56,7 @@ const updateFields = function () {
   const oneTimeFeeElement = document.querySelector("#oneTimeFee");
   const oneTimeFeeCashElment = document.querySelector("#oneTimeFeeCash");
 
+  console.log(numberWithCommas(20000000))
   oneTimeFeeCashElment.textContent = numberWithCommas(getOneTimeFeeCash()) + " \u20AC";
   loanAmountElement.innerText = numberWithCommas(loanAmount) + " \u20AC";
   totalRepayableElement.textContent = numberWithCommas(totalRepayable) + " \u20AC";
